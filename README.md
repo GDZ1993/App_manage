@@ -1,5 +1,5 @@
-# vue2.0-template
-
+# App_manage
+# 乾诚科技外卖扫码点餐管理系统
 > A Vue.js project
 
 ## Build Setup
