@@ -1,0 +1,152 @@
+[
+  {
+    "meta": {
+      "title": "首页"
+    },
+    "path": "/home",
+    "name": "home",
+    "component": "/home/home.vue",
+    "children": [],
+    "show": true
+  },
+  {
+    "meta": {
+      "title": "订单"
+    },
+    "path": "/orderForm",
+    "name": "orderForm",
+    "component": "/orderForm/orderForm.vue",
+    "children": [],
+    "show": true
+  },
+  {
+    "meta": {
+      "title": "订单详情"
+    },
+    "path": "/orderDetails",
+    "name": "orderDetails",
+    "component": "/orderDetails/orderDetails.vue",
+    "children": [],
+    "show": true
+  },
+  {
+    "meta": {
+      "title": "商品分类"
+    },
+    "path": "/classify",
+    "name": "classify",
+    "component": "/classify/classify.vue",
+    "children": [],
+    "show": true
+  },
+  {
+    "meta": {
+      "title": "分类管理"
+    },
+    "path": "/classifyList",
+    "name": "classifyList",
+    "component": "/classifyList/classifyList.vue",
+    "children": [],
+    "show": true
+  },
+  {
+    "meta": {
+      "title": "添加商品"
+    },
+    "path": "/addGoods",
+    "name": "addGoods",
+    "component": "/addGoods/addGoods.vue",
+    "children": [],
+    "show": true
+  },
+  {
+    "meta": {
+      "title": "折扣管理"
+    },
+    "path": "/discount",
+    "name": "discount",
+    "component": "/discount/discount.vue",
+    "children": [],
+    "show": true
+  },
+  {
+    "meta": {
+      "title": "添加折扣"
+    },
+    "path": "/addDiscount",
+    "name": "addDiscount",
+    "component": "/addDiscount/addDiscount.vue",
+    "children": [],
+    "show": true
+  },
+  {
+    "meta": {
+      "title": "商家信息"
+    },
+    "path": "/setting",
+    "name": "setting",
+    "component": "/setting/setting.vue",
+    "children": [],
+    "show": true
+  },
+  {
+    "meta": {
+      "title": "商家信息设置"
+    },
+    "path": "/updateShopInfo",
+    "name": "updateShopInfo",
+    "component": "/updateShopInfo/updateShopInfo.vue",
+    "children": [],
+    "show": true
+  },
+  {
+    "meta": {
+      "title": "满减优惠"
+    },
+    "path": "/moneyOff",
+    "name": "moneyOff",
+    "component": "/moneyOff/moneyOff.vue",
+    "children": [],
+    "show": true
+  },
+  {
+    "meta": {
+      "title": "添加满减优惠"
+    },
+    "path": "/moneyOffAdd",
+    "name": "moneyOffAdd",
+    "component": "/moneyOffAdd/moneyOffAdd.vue",
+    "children": [],
+    "show": true
+  },
+  {
+    "meta": {
+      "title": "整单折扣"
+    },
+    "path": "/orderDiscount",
+    "name": "orderDiscount",
+    "component": "/orderDiscount/orderDiscount.vue",
+    "children": [],
+    "show": true
+  },
+  {
+    "meta": {
+      "title": "添加整单折扣"
+    },
+    "path": "/orderDiscountUpdate",
+    "name": "orderDiscountUpdate",
+    "component": "/orderDiscountUpdate/orderDiscountUpdate.vue",
+    "children": [],
+    "show": true
+  },
+  {
+    "meta": {
+      "title": "外卖申请"
+    },
+    "path": "/takeOut",
+    "name": "takeOut",
+    "component": "/takeOut/takeOut.vue",
+    "children": [],
+    "show": true
+  }
+]
