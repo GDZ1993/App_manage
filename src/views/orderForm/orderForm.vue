@@ -109,7 +109,7 @@ export default {
   },
   data () {
     return {
-      orderType: 'TAKEOUT',
+      orderType: 'SCAN',
       orderTypeArr: [
         { text: '订单类型：堂食', value: 'SCAN' },
         { text: '订单类型：外卖', value: 'TAKEOUT' }
@@ -123,16 +123,7 @@ export default {
       list: [],
       arr: [],
       page: 0,
-      pages: 1,
-      payType: {
-        WECHART: '微信',
-        ALIPAY: '支付宝'
-      },
-      stateType: {
-        WAITPAY: '待支付',
-        CANCELED: '已取消',
-        FINISH: '已支付'
-      }
+      pages: 1
     }
   },
   watch: {
@@ -249,8 +240,7 @@ export default {
       return newArr
     }
   },
-  beforeMount () {
-  }
+  beforeMount () {}
 }
 </script>
 
