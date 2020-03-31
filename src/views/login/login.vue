@@ -25,7 +25,8 @@ export default {
       },
       clientType: '',
       audioSrc: require('../../assets/message_inform.mp3'),
-      routers: require('../../../static/router')
+      routers: require('../../../static/router'),
+      userOpenid: ''
     }
   },
   methods: {
@@ -39,8 +40,27 @@ export default {
     },
     getOpenid () {
       return new Promise((resolve, reject) => {
-        this.$ajax.post('https://39.99.131.249:3381/pay/qcwx/getOpenId', {
+        this.$ajax.post('https://www.ddqcwl.com:3381/pay/qcwx/getOpenId', {
           code: this.code
+        }).then(res => {
+          if (res.data.code === 0) {
+            resolve(res)
+            this.userOpenid = res.data.openId
+          } else {
+            this.$toast.fail(res.data.errorMsg)
+            reject(res)
+          }
+        }).catch(e => {
+          this.$toast.fail('获取openid接口失败')
+          reject(e)
+        })
+      })
+    },
+    getAlipayState () {
+      return new Promise((resolve, reject) => {
+        this.$ajax.post('https://www.ddqcwl.com:3381/pay/Alipay/alipayState', {
+          type: this.clientType,
+          useridORopenid: this.userOpenid
         }).then(res => {
           if (res.data.code === 0) {
             resolve(res)
@@ -82,19 +102,25 @@ export default {
       })
     },
     windowSearch () {
+      console.log('windowSearch', window.location.search)
       if (!window.location.search) return ''
       return JSON.parse('{"' + window.location.search.split('?').join('').replace(/=/g, '":"').replace(/&/g, '","') + '"}')
     },
     webgetsocket () {
       if ('WebSocket' in window) {
         var ws = new WebSocket('wss://www.ddqcwl.com:3381/pay/websocket/' + this.$cookie.get('openid'))
+        console.log('webgetsocket', this.$cookie.get('openid'))
         ws.onopen = () => console.log('Web Socket 已连接上...') // Web Socket 已连接上，使用 send() 方法发送数据 ws.send('发送数据')
-        ws.onmessage = (evt) => this.socket_message(evt.data) // socket收到一个信息
+        ws.onmessage = (evt) => {
+          console.log('onmessage', evt)
+          this.socket_message(evt.data)
+        } // socket收到一个信息
         ws.onclose = () => console.log('连接已关闭...')// 关闭 websocket
         ws.onerror = () => this.$toast.fail('通信发生错误！') // websocket通信错误！
       } else this.$toast.fail('您的浏览器不支持 WebSocket！')
     },
     socket_message (e) {
+      console.log('数据已接收...e', e)
       let res = JSON.parse(e)
       let data = JSON.parse(res.data)
       console.log('数据已接收...res.data', data)
@@ -108,8 +134,10 @@ export default {
     let str = window.navigator.userAgent.toLowerCase()
     this.clientType = str.indexOf('alipayclient') > 0 ? 'ALIPAY' : str.indexOf('micromessenger') > 0 ? 'WECHART' : 'WECHART'
     let entity = this.windowSearch()
+    console.log('entity', entity)
     if (entity && entity.code) {
       this.code = entity.code
+      this.getOpenid()
     }
   }
 }

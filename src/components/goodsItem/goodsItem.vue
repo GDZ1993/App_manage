@@ -11,13 +11,11 @@
       <div v-if="entity.takeout_mark">
         <div class="row-between"><p>外卖价格:</p>￥{{entity.takeout_price}}</div>
         <div class="row-between"><p>包装费:</p>￥{{entity.packing_charges}}</div>
-        <!--<div class="row-between"><p>外卖状态:</p>{{entity.takeout_opt ? '上架' : '下架'}}</div>-->
       </div>
-      <!--<div class="row-between"><p>堂食状态:</p>{{entity.opt ? '上架' : '下架'}}</div>-->
     </div>
     <div slot="footer">
-      <van-button size="mini" type="warning" @click.stop="opt_click('takeout_opt', entity.takeout_opt)" v-if="entity.takeout_mark">{{entity.takeout_opt ? '外卖下架' : '外卖上架'}}</van-button>
-      <van-button size="mini" type="info" @click.stop="opt_click('opt', entity.opt)">{{entity.opt ? '堂食下架' : '堂食上架'}}</van-button>
+      <van-button size="mini" type="warning" @click.stop="opt_click('takeout_opt', entity.takeout_opt?false:true)" v-if="entity.takeout_mark">{{entity.takeout_opt ? '外卖下架' : '外卖上架'}}</van-button>
+      <van-button size="mini" type="info" @click.stop="opt_click('opt', entity.opt?false:true)">{{entity.opt ? '堂食下架' : '堂食上架'}}</van-button>
     </div>
   </van-card>
 </template>
@@ -35,7 +33,6 @@ export default {
   methods: {
     to_lick () {
       console.log(this.entity, this.classify)
-      // form: item, menu_level1_id: item.id,level1Name: item.level1Name
       this.$router.push({
         name: 'addGoods',
         params: {
@@ -53,10 +50,10 @@ export default {
       })
       this.$ajax.post('/updateFood', {
         food_id: this.entity.id,
-        [key]: e ? 0 : 1
+        [key]: e
       }).then(res => {
         if (res.data.resultCode === 0) {
-          this.entity[key] = e ? 0 : 1
+          this.entity[key] = e
           this.$toast.success({
             message: '修改成功',
             forbidClick: true

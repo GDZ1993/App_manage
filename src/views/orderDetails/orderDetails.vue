@@ -10,13 +10,13 @@
           <van-cell title="下单时间:" :value="entity.commitTime" />
           <van-swipe-cell v-for="(item,index) in entity[entity.billType == 'TAKEOUT' ? 'takeoutBillDetailPicPath' : 'scanBillDetailPicPath']" :key="item.foodId * item.id + item.billno" style="margin: 0.5rem 0">
             <van-card :num="item.buyCount" :price="item.discountPrice || item.fullMinusPrice" :origin-price="item.noramlPrice" :title="item.foodName" :thumb="$picture_src+item.relativePath">
-              <div slot="tag" v-if="item.returnState && entity.state != 'APPLYRETURN' && entity.returnMark">
+              <div slot="tag" v-if="item.returnThis && entity.returnMark">
                 <van-tag mark type="danger">退菜</van-tag>
               </div>
-              <div slot="tags">
+              <div slot="tags" v-if="item.returnThis">
                 <div class="row-between">退菜数量: <span>x{{item.returnThis}}</span></div>
               </div>
-              <div slot="footer" v-if="entity.state == 'APPLYRETURN' && entity.returnMark">
+              <div slot="footer" v-if="item.returnState == 'APPLYRETURN' && entity.returnMark">
                 <van-button size="mini" type="primary" @click="agree_click(item)">同意</van-button>
                 <van-button size="mini" type="warning">拒绝</van-button>
               </div>

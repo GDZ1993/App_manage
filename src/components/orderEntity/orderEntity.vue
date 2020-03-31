@@ -4,8 +4,11 @@
       <div class="panel-content">
         <van-cell title="订单号:" :value="item.billno" />
         <van-card  v-for="it in item[item.billType == 'TAKEOUT' ? 'takeoutBillDetailPicPath' : 'scanBillDetailPicPath']" :key="it.id + it.foodId" :num="it.buyCount" :price="it.discountPrice || it.fullMinusPrice" :origin-price="it.noramlPrice" :title="it.foodName" :thumb="$picture_src+it.relativePath">
-          <div slot="tag" v-if="it.returnState && item.state != 'APPLYRETURN' && item.returnMark">
+          <div slot="tag" v-if="it.returnThis && item.returnMark">
             <van-tag mark type="danger">退菜</van-tag>
+          </div>
+          <div slot="tags" v-if="it.returnThis">
+            <div class="row-between">退菜数量: <span>x{{it.returnThis}}</span></div>
           </div>
         </van-card>
         <van-cell title="商品金额:" :value="item.totalMoney" />

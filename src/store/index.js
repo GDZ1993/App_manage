@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { Toast, Notify } from 'vant'
+import { Notify } from 'vant'
 import {router} from '../router/index'
 import {routers} from '../router/router.js'
 Vue.use(Vuex)
@@ -15,9 +15,6 @@ const store = new Vuex.Store({
     },
     setRefundData (state, data) {
       state.refundData = data
-    },
-    setHomeBoo (state, data) {
-      state.homeBoo = data
     },
     setRouter (state, data) {
       let datas = []
@@ -65,10 +62,6 @@ const store = new Vuex.Store({
         }
       })
       state.commit('setRefundData', data)
-    },
-    setHomeBoo (state, data) {
-      Toast.fail('asd')
-      console.log(router.push('home'))
     },
     loading (state, mv) {
       mv.$toast.loading({
