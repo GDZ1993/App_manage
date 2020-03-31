@@ -9,7 +9,7 @@
       <van-cell title="二维码" is-link @click="application_qrcode" :value="qrcode_state == 'APPROVED' ? qrcode_count : qrcodeType[qrcode_state]" style="margin-bottom: 0.5rem"/>
       <van-cell title="店铺设置" is-link to="setting" />
       <van-cell title="外卖状态" :to="take_state == 'UNAPPLY' || take_state == 'REFUSED' ? 'takeOut' : ''" :is-link="take_state == 'UNAPPLY' || take_state == 'REFUSED'" :value="takeOut[take_state] + refuse_reason"/>
-      <van-cell title="清除缓存" is-link @click="clearCache"/>
+      <!--<van-cell title="清除缓存" is-link @click="clearCache"/>-->
       <van-dialog v-model="dialog" title="申请二维码" show-cancel-button @confirm="dialog_ok" @cancel="dialog_cancel">
         <div style="width: 100%;padding: 1rem">
           <van-cell title="单元格" value="内容" size="large">

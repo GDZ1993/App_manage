@@ -20,8 +20,8 @@ export default {
       code: '',
       butLoading: false,
       formData: {
-        number: '12345678',
-        password: '12345678'
+        number: '',
+        password: ''
       },
       clientType: '',
       audioSrc: require('../../assets/message_inform.mp3'),
@@ -43,8 +43,10 @@ export default {
           code: this.code
         }).then(res => {
           if (res.data.code === 0) {
-            resolve(res)
             this.userOpenid = res.data.openId
+            this.$cookie.set('userOpenid', res.data.openId)
+            alert(JSON.stringify(res.data))
+            resolve(res)
           } else {
             this.$toast.fail(res.data.errorMsg)
             reject(res)
@@ -82,6 +84,24 @@ export default {
         })
       })
     },
+    merchantsid () {
+      return new Promise((resolve, reject) => {
+        this.$ajax.post('/merchantsid', {
+          openid: this.$cookie.get('userOpenid')
+        }).then(res => {
+          alert('merchantsid' + JSON.stringify(res.data))
+          if (res.data.resultCode === 0) {
+            resolve(res)
+          } else {
+            this.$toast.fail(res.data.errorMsg)
+            reject(res)
+          }
+        }).catch(e => {
+          this.$toast.fail('接口失败')
+          reject(e)
+        })
+      })
+    },
     windowSearch () {
       if (!window.location.search) return ''
       return JSON.parse('{"' + window.location.search.split('?').join('').replace(/=/g, '":"').replace(/&/g, '","') + '"}')
@@ -112,9 +132,11 @@ export default {
     this.clientType = str.indexOf('alipayclient') > 0 ? 'ALIPAY' : str.indexOf('micromessenger') > 0 ? 'WECHART' : 'WECHART'
     let entity = this.windowSearch()
     console.log('entity', entity)
-    if (entity && entity.code) {
+    if (entity && entity.code && !this.$cookie.get('userOpenid')) {
       this.code = entity.code
-      // this.getOpenid()
+      this.getOpenid().then(res => this.merchantsid())
+    } else {
+      this.merchantsid()
     }
   }
 }
