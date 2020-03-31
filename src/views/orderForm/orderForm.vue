@@ -10,93 +10,12 @@
         </van-nav-bar>
       </div>
       <div style="height: 2.875rem"></div>
-      <!--<button @click="click_test">click_test</button>-->
       <van-tabs v-model="active" animated swipeable sticky color="#1989fa" @change="dropdown_change" swipe-threshold="5">
         <van-tab :title="item" v-for="(item,index) in activeTypeText" :key="item">
           <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" v-if="active==index">
             <OrderEntity :list="arr"/>
           </van-list>
         </van-tab>
-        <!--<van-tab title="待支付">
-          <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" v-if="active==1">
-            &lt;!&ndash;<van-panel :title=" + item.return_mark ? '桌号: ' + item.table_no + ' 退菜' : '桌号: ' + item.table_no + ' 正常'" :status="stateType[item.state]" v-for="item in list" :key="item.id" >
-              <div class="panel-content">
-                <van-cell title="订单号:" :value="item.billNo" />
-                <van-cell title="小计金额:" :value="item.total_money" />
-                <van-cell title="已优惠:" :value="item.discount_money || 0" />
-                <van-cell title="实付金额:" :value="item.final_money" />
-                <van-cell title="支付方式:" value="微信支付" v-if="item.state==='FINISH'"/>
-                <van-cell title="下单时间:" :value="item.commit_time" />
-                <van-cell title="备注:" :value="item.others" />
-              </div>
-              <div slot="footer" class="row-end" >
-                <van-button size="small" type="info" :to="{name: 'orderDetails', params: item}">查看</van-button>
-              </div>
-            </van-panel>&ndash;&gt;
-            <OrderEntity :list="list"/>
-            <Without v-if="!list.length"></Without>
-          </van-list>
-        </van-tab>
-        <van-tab title="已取消">
-          <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" v-if="active==2">
-            &lt;!&ndash;<van-panel :title=" + item.return_mark ? '桌号: ' + item.table_no + ' 退菜' : '桌号: ' + item.table_no + ' 正常'" :status="stateType[item.state]" v-for="item in list" :key="item.id" >
-              <div class="panel-content">
-                <van-cell title="订单号:" :value="item.billNo" />
-                <van-cell title="小计金额:" :value="item.total_money" />
-                <van-cell title="已优惠:" :value="item.discount_money || 0" />
-                <van-cell title="实付金额:" :value="item.final_money" />
-                <van-cell title="支付方式:" value="微信支付" v-if="item.state==='FINISH'"/>
-                <van-cell title="下单时间:" :value="item.commit_time" />
-                <van-cell title="备注:" :value="item.others" />
-              </div>
-              <div slot="footer" class="row-end" >
-                <van-button size="small" type="info" :to="{name: 'orderDetails', params: item}">查看</van-button>
-              </div>
-            </van-panel>&ndash;&gt;
-            <OrderEntity :list="list"/>
-            <Without v-if="!list.length"></Without>
-          </van-list>
-        </van-tab>
-        <van-tab title="已完成">
-          <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" v-if="active==3">
-            &lt;!&ndash;<van-panel :title=" + item.return_mark ? '桌号: ' + item.table_no + ' 退菜' : '桌号: ' + item.table_no + ' 正常'" :status="stateType[item.state]" v-for="item in list" :key="item.id" >
-              <div class="panel-content">
-                <van-cell title="订单号:" :value="item.billNo" />
-                <van-cell title="小计金额:" :value="item.total_money" />
-                <van-cell title="已优惠:" :value="item.discount_money || 0" />
-                <van-cell title="实付金额:" :value="item.final_money" />
-                <van-cell title="支付方式:" value="微信支付" v-if="item.state==='FINISH'"/>
-                <van-cell title="下单时间:" :value="item.commit_time" />
-                <van-cell title="备注:" :value="item.others" />
-              </div>
-              <div slot="footer" class="row-end">
-                <van-button size="small" type="info" :to="{name: 'orderDetails', params: item}">查看</van-button>
-              </div>
-            </van-panel>&ndash;&gt;
-            <OrderEntity :list="list"/>
-            <Without v-if="!list.length"></Without>
-          </van-list>
-        </van-tab>
-        <van-tab title="退单">
-          <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" v-if="active==4">
-            &lt;!&ndash;<van-panel :title=" + item.return_mark ? '桌号: ' + item.table_no + ' 退菜' : '桌号: ' + item.table_no + ' 正常'" :status="stateType[item.state]" v-for="item in list" :key="item.id" >
-              <div class="panel-content">
-                <van-cell title="订单号:" :value="item.billNo" />
-                <van-cell title="小计金额:" :value="item.total_money" />
-                <van-cell title="已优惠:" :value="item.discount_money || 0" />
-                <van-cell title="实付金额:" :value="item.final_money" />
-                <van-cell title="支付方式:" value="微信支付" v-if="item.state==='FINISH'"/>
-                <van-cell title="下单时间:" :value="item.commit_time" />
-                <van-cell title="备注:" :value="item.others" />
-              </div>
-              <div slot="footer" class="row-end">
-                <van-button size="small" type="info" :to="{name: 'orderDetails', params: item}">查看</van-button>
-              </div>
-            </van-panel>&ndash;&gt;
-            <OrderEntity :list="list"/>
-            <Without v-if="!list.length"></Without>
-          </van-list>
-        </van-tab>-->
       </van-tabs>
     </div>
 </template>
@@ -130,6 +49,14 @@ export default {
   },
   watch: {
     '$store.state.newsData' (res) {
+      this.storeChange(res)
+    },
+    '$store.state.refundData' (res) {
+      this.storeChange(res)
+    }
+  },
+  methods: {
+    storeChange (res) {
       if (res.resultCode === 0) {
         let activeType = -1
         this.activeType.forEach((item, index) => {
@@ -151,31 +78,6 @@ export default {
           this.arr.unshift(res.billDetail)
         }
       }
-    },
-    '$store.state.refundData' (x) {
-      console.log('refundData', x)
-      // let arr = this.list.filter(item => item.billNo === x.billno)
-      // if (!arr || !arr.length) {
-      //   this.list.unshift({
-      //     billNo: x.billno,
-      //     commit_time: this.$Time(x.commitTime).format('YYYY-MM-DD HH:mm:ss'),
-      //     discount_money: x.discountMoney,
-      //     final_money: x.finalMoney,
-      //     others: x.others,
-      //     return_mark: x.returnMark,
-      //     should_pay: x.shouldPay,
-      //     state: x.state,
-      //     table_no: x.tableNo,
-      //     total_money: x.totalMoney
-      //   })
-      // }
-    }
-  },
-  methods: {
-    click_test () {
-      let str = '{"billDetail":{"id":356,"billno":"S_561812242388099d72","sellerOpenid":"oi1bm1StkEwagvQuHaW7d6Wd7RYI","buyerOpenidUserid":"oi1bm1aW42BE7p4SgBaxkxcd3coo","clientType":"WECHART","tableNo":"003","totalMoney":1,"discountMoney":0.99,"shouldPay":0.01,"finalMoney":0.01,"commitTime":1585552877000,"others":"","state":"WAITPAY","billType":"SCAN","scanBillDetailPicPath":[{"id":635,"billno":"S_561812242388099072","foodId":76,"foodName":"红烧鲤鱼","buyCount":1,"picUuid":"f0a7d479-dd3c-4fed-890d-3584c6ae5160","noramlPrice":1,"discountPrice":0.01,"fullMinusPrice":0.01,"relativePath":"f0a7d479-dd3c-4fed-890d-3584c6ae5160.png"}]},"resultCode":0}'
-      console.log(JSON.parse(str))
-      this.$store.dispatch('setNewsData', JSON.parse(str))
     },
     dropdown_change () {
       this.list = []
@@ -209,10 +111,8 @@ export default {
           openid: this.$cookie.get('openid'),
           state: this.activeType[this.active] || '',
           type: this.orderType
-          // pageNum: this.page
         }).then(res => {
           if (res.data.resultCode === 0) {
-            // this.pages = 1
             this.arrList = res.data.billList
             this.list = this.pageFunction(res.data.billList, 10)
             if (this.list.length) {
@@ -253,8 +153,7 @@ export default {
       })
       return newArr
     }
-  },
-  beforeMount () {}
+  }
 }
 </script>
 

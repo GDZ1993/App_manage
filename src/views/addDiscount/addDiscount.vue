@@ -11,7 +11,6 @@
         <van-field :value="price" readonly type="number" label="商品原价" name="price" placeholder="未选择商品" :class="!takeout_mark ? 'field-css' : ''"><p slot="button">元</p></van-field>
         <van-field :value="takeout_price" readonly type="number" label="外卖原价" name="price" placeholder="未选择商品" class="field-css" v-if="takeout_mark"><p slot="button">元</p></van-field>
         <van-cell title="价格设置方式" is-link :value="price_Manner"  @click="priceWay" class="field-css"/>
-        <!--<van-field  readonly clickable right-icon="arrow" :value="price_Manner" label="价格设置方式" name="mark" placeholder="未选择" @click="priceWay" class="field-css"/>-->
         <div v-if="scan_mark">
           <van-cell title="堂食活动" is-link v-if="submitType === 1"/>
           <van-field name="scan_mark" label="堂食活动" v-else>
@@ -49,7 +48,6 @@
             <van-field :value="formData.take_discount_price"  @blur="takedis_blur" :readonly="price_MannerType == 1 || !price_MannerType" type="number" label="活动价格"  name="discount_price" :rules="formRules['take_discount_price']" placeholder="请填写外卖活动价格" >
               <p slot="button">元</p>
             </van-field>
-            <!--<van-field v-model="formData.take_purchase_limits" type="number" name="purchase_limits" label="限购数量" :rules="formRules['take_purchase_limits']" placeholder="请填写外卖限购数量" class="field-css"/>-->
             <van-field name="take_purchase_limits" label="限购" class="field-css">
               <template #input>
                 <van-switch v-model="formData.take_purchase_limits" size="20" />
@@ -77,7 +75,6 @@
       </van-popup>
       <van-popup v-model="classify_showPopup"   position="right" style="width:100%;height: 100%;">
         <div class="classify-showPopup-content">
-          <!--<div class="classify-showPopupheadline row-div" slot="title">选择商品</div>-->
           <div style="position: fixed;width: 100%;top: 0;left: 0;z-index: 99;">
             <van-nav-bar title="选择商品" left-text="返回" @click-left="classify_showPopup = false" />
           </div>
@@ -339,7 +336,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.$route.params)
     if (this.$route.params && this.$route.params.type) {
       this.submitType = this.$route.params.type
       this.navBarText = '修改折扣'

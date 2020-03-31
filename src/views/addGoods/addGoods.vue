@@ -203,7 +203,6 @@ export default {
     }
   },
   beforeMount () {
-    console.log(this.$route.params)
     if (this.$route.params && this.$route.params.menu_level1_id) {
       if (this.$route.params.form) {
         let e = this.$route.params.form

@@ -2,14 +2,12 @@
     <div>
       <div style="position: fixed;width: 100%;top: 0;left: 0;z-index: 99;"><van-nav-bar title="餐饮管理系统" /></div>
       <div style="height: 2.875rem"></div>
-      <!--<van-image width="100%" height="200px" fit="cover" :src="$picture_src + shopEntity.relativepath" v-if="shopEntity.relativepath"/>-->
       <van-cell :title="shopEntity.storeName" icon="shop-o" style="margin-bottom: 0.5rem" v-if="shopEntity.storeName"></van-cell>
       <van-cell title="订单管理" is-link to="orderForm" />
       <van-cell title="菜品管理" is-link to="classify" style="margin-bottom: 0.5rem"/>
       <van-cell title="打折特价" is-link to="discount" />
       <van-cell title="二维码" is-link @click="application_qrcode" :value="qrcode_state == 'APPROVED' ? qrcode_count : qrcodeType[qrcode_state]" style="margin-bottom: 0.5rem"/>
       <van-cell title="店铺设置" is-link to="setting" />
-      <!--UNAPPLY: '未申请',APPLYING: '审批中', REFUSED: '拒绝申请',APPROVED: '批准'-->
       <van-cell title="外卖状态" :to="take_state == 'UNAPPLY' || take_state == 'REFUSED' ? 'takeOut' : ''" :is-link="take_state == 'UNAPPLY' || take_state == 'REFUSED'" :value="takeOut[take_state] + refuse_reason"/>
       <van-cell title="清除缓存" is-link @click="clearCache"/>
       <van-dialog v-model="dialog" title="申请二维码" show-cancel-button @confirm="dialog_ok" @cancel="dialog_cancel">
@@ -29,7 +27,6 @@
             <van-image class="vanImage"  :src="item.codeurl" v-for="(item,index) in qrcode_codeList" :key="index"/>
             <van-button type="info" size="small" v-clipboard:copy="$picture_src + qrcode_Leavestat" v-clipboard:success="onCopy" v-clipboard:error="onError">复制解压包地址</van-button>
             <div class="row-end" v-if="qrcode_codeList[0]" style="width: 300px;word-break: break-all">{{$picture_src + qrcode_Leavestat}}</div>
-            <!--<a :href="qrcode_codeList[0].leavestat" v-if="qrcode_codeList[0]">复制解压包地址</a>-->
           </div>
         </div>
       </van-popup>
@@ -108,7 +105,6 @@ export default {
         })
       })
     },
-    // 商家信息
     shopRequest () {
       return new Promise((resolve, reject) => {
         this.$ajax.post('/SellerInfo/Select', {
@@ -124,7 +120,6 @@ export default {
         })
       })
     },
-    // 查询商户二维码申请状态
     qrCodeRequest () {
       return new Promise((resolve, reject) => {
         this.$ajax.post(this.$URL2 + '/Merchant_status', {
@@ -141,14 +136,6 @@ export default {
           console.log(e)
           reject(e)
         })
-      })
-    },
-    saveImage () {
-      if (!window.plus) return
-      window.plus.gallery.save(this.wechat.cover, function () {
-        window.plus.nativeUI.alert('保存图片到相册成功')
-      }, function () {
-        window.plus.nativeUI.alert('保存失败')
       })
     }
   },

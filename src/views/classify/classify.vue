@@ -11,23 +11,10 @@
       <slot name="title"></slot>
       <van-tree-select :height="!infoType ? 'calc(100% - 3.125rem)' : '100%'" :items="classify_arr" :main-active-index.sync="active" @click-nav="nav_click">
         <template slot="content">
-          <!--<GoodsItem v-for="item in goods_arr" :key="item.id" :entity="item" :classify="classify" />-->
           <component :is="!infoType ? 'GoodsItem' : 'SelectGoodsItem'" v-for="item in goods_arr" :key="item.id" :entity="item" :classify="classify" @select_event="select_event"></component>
           <Without v-if="!goods_arr.length"></Without>
         </template>
       </van-tree-select>
-      <!--<van-goods-action safe-area-inset-bottom class="goods-action" v-if="!infoType">
-        <div class="goods-action-div row-between">
-          <router-link class="row-div routerLink-css" to="/classifyList">
-            <van-icon name="cluster-o" color="#FFD99B"/>
-            <span style="color: #333333">分类管理</span>
-          </router-link>
-          <router-link class="row-div" style="margin-right: 0.5rem" v-if="classify_arr[active]"  >
-            <van-icon name="add-o" color="#FFD99B"/>
-            <span style="color: #333333">新增商品</span>
-          </router-link>
-        </div>
-      </van-goods-action>-->
       <van-popup v-model="popupShow" position="right" style="width: 50%;height: 100%">
         <van-cell icon="cluster-o" title="分类管理" is-link to="/classifyList"/>
         <van-cell icon="add-o" title="新增商品" is-link :to="{name: 'addGoods', params: {menu_level1_id: classify_arr[active].id,level1Name: classify_arr[active].level1Name}}" v-if="classify_arr[active]"/>
@@ -69,13 +56,6 @@ export default {
       console.log(this.classify_arr)
       this.classify = this.classify_arr[e]
       this.requestGoods()
-    },
-    deleteItem (items) {
-      let inx = -1
-      this.goods_arr.forEach((item, index) => {
-        if (item.id === items.id) inx = index
-      })
-      if (inx !== -1) this.goods_arr.splice(inx, 1)
     },
     requestGoods (e) {
       this.$toast.loading({

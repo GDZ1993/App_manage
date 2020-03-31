@@ -106,7 +106,7 @@ export default {
       }
       return true
     },
-    asyncBeforeReadA (file) { // foodHygieneLicense 食品卫生许可证UUID（图片上传接口返回）
+    asyncBeforeReadA (file) {
       console.log(file)
       return new Promise((resolve, reject) => {
         let arr = ['jpeg', 'jpg', 'png', 'gif'].filter(item => file.file.type.indexOf(item) !== -1 ? item : '')
@@ -175,10 +175,8 @@ export default {
     }
   },
   mounted () {
-    console.log(this.$cookie.getJSON('take-out'))
     window.addEventListener('message', (event) => {
       var loc = event.data
-      console.log(event.data)
       if (loc.module === 'locationPicker') {
         if (loc.poiaddress.indexOf('省') === -1) return this.$toast.fail('请选择正确地址')
         let poiaddress = loc.poiaddress
@@ -194,7 +192,6 @@ export default {
         this.formData.latitude = loc.latlng.lat
         this.mapShow = false
       }
-      // console.log('你使用的组件是' + loc.module + ',刚选择了' + loc.poiname + ',它位于' + loc.poiaddress + ',它的经纬度是：' + loc.latlng.lat + ',' + loc.latlng.lng + ',所属城市为:' + loc.cityname)
     }, false)
   }
 }

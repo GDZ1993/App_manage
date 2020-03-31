@@ -41,7 +41,6 @@
         </div>
         <div slot="footer" class="row-end" v-if="entity.state == 'APPLYRETURN' && entity.returnMark">
           <van-button size="small" block type="warning" style="margin-left: 1rem" @click="delete_click">同意退单</van-button>
-          <!--<van-button size="small" type="warning" style="margin-left: 1rem">删除订单</van-button>-->
         </div>
       </van-panel>
       <van-popup v-model="show" position="bottom" closeable @close="popup_close">
@@ -95,12 +94,7 @@ export default {
     }
   },
   methods: {
-    onRefresh () {
-      this.info_request()
-    },
-    // 同意退菜
     agree_click (e) {
-      console.log(e)
       let entity = {
         billNo: this.entity.billno,
         foodId: e.foodId,
@@ -180,9 +174,7 @@ export default {
             this.$toast.fail({
               message: '操作成功',
               forbidClick: true,
-              onClose: () => {
-                this.info_request()
-              }
+              onClose: () => this.info_request()
             })
             resolve(res.data.resultCode)
           } else {
@@ -197,7 +189,6 @@ export default {
       })
     },
     info_request () {
-      // orderFood/takeoutBillOpt/historyBillDetail
       this.$toast.loading({
         message: '加载中...',
         forbidClick: true,
@@ -239,9 +230,7 @@ export default {
       this.$toast.fail({
         message: '请选择查看内容',
         forbidClick: true,
-        onClose: () => {
-          this.$router.go(-1)
-        }
+        onClose: () => this.$router.go(-1)
       })
     }
   }

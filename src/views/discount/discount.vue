@@ -76,9 +76,6 @@ export default {
         this.infoRequest()
       }
     },
-    onSearch (e) {
-      console.log(e)
-    },
     delete_click (t, i) {
       this.$dialog.confirm({
         title: '删除折扣',
@@ -139,8 +136,6 @@ export default {
         })
       })
     }
-  },
-  mounted () {
   }
 }
 </script>

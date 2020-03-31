@@ -5,11 +5,6 @@
       </div>
       <div style="height: 2.875rem"></div>
       <van-form @submit="onSubmit">
-        <!--<van-field name="uploader" label="店铺logo">
-          <template #input>
-            <van-uploader v-model="uploader" :max-count="1" :after-read="asyncBeforeRead" :before-read="beforeRead"/>
-          </template>
-        </van-field>-->
         <van-field v-model="formData.shopName" label="店铺名称" name="shopName" :rules="formRules['shopName']" placeholder="请填写店铺名称" />
         <van-field v-model="formData.storePhoneNum" type="tel" label="店铺电话" name="storePhoneNum" :rules="formRules['storePhoneNum']" placeholder="请填写店铺联系方式" class="field-css"/>
         <van-field name="scanOpenTime" label="营业时间" :value="formData.scanOpenTime"  :rules="formRules['scanOpenTime']" @click="begin_showPicker = true" placeholder="未设置" readonly clickable right-icon="arrow" />
@@ -174,8 +169,6 @@ export default {
     onSubmit () {
       let e = JSON.parse(JSON.stringify(this.formData))
       e.openid = this.$cookie.get('openid')
-      // e.open_state = this.formData.open_state ? 1 : 0
-      // e.auto_recv_order = this.formData.auto_recv_order ? 1 : 0
       this.update_Request(e)
     },
     update_Request (e) {
@@ -190,9 +183,7 @@ export default {
             this.$toast.success({
               message: '操作成功',
               forbidClick: true,
-              onClose: () => {
-                // this.$router.go(-1)
-              }
+              onClose: () => this.$router.go(-1)
             })
             resolve(res)
           } else {

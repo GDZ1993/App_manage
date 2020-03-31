@@ -7,9 +7,6 @@
         </div>
       </van-nav-bar>
     </div>
-    <!--<van-search v-model="sele" show-action placeholder="请输入搜索关键词" @search="onSearch" class="search-css">-->
-      <!--<div slot="action" @click="onSearch">搜索</div>-->
-    <!--</van-search>-->
     <div style="height: 2.875rem;"></div>
     <van-swipe-cell v-for="(item,index) in classify_arr" :key="item.id" class="swipe-cell-css">
       <div class="row-between" style="padding: 0.5rem">
@@ -22,14 +19,6 @@
       </div>
       <van-button slot="right" type="danger" size="small" icon="delete" @click="delete_click(item,index)">删除</van-button>
     </van-swipe-cell>
-    <!--<van-goods-action safe-area-inset-bottom class="goods-action">
-      <div class="goods-action-div row-between">
-        <div></div>
-        <div class="row-div">
-          <van-button type="default" class="newAddbut" size="small" icon="add-o" @click="add_click">新建分类</van-button>
-        </div>
-      </div>
-    </van-goods-action>-->
     <van-overlay :show="dialog_show" @click="dialog_show = false" class="column-div">
       <div class="overlay-css" @click.stop>
         <p class="overlay-headline">{{dialog_headline}}</p>
@@ -45,7 +34,6 @@
     <div style="height: 3.5rem;background: #F1F1F1"></div>
     <van-popup v-model="popupShow" position="right" style="width: 50%;height: 100%">
       <van-cell icon="add-o" title="新增分类" is-link  @click="add_click"/>
-      <!--<van-cell icon="add-o" title="新增商品" is-link :to="{name: 'addGoods', params: {menu_level1_id: classify_arr[active].id,level1Name: classify_arr[active].level1Name}}"/>-->
     </van-popup>
   </div>
 </template>

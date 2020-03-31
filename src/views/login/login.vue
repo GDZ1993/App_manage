@@ -35,7 +35,6 @@ export default {
       if (!this.formData.number) return this.$toast.fail('请输入用户名')
       if (!this.formData.password) return this.$toast.fail('请输入密码')
       this.butLoading = true
-      // localStorage.setItem('routers', JSON.stringify(this.routers))
       this.loginReuqest()
     },
     getOpenid () {
@@ -46,24 +45,6 @@ export default {
           if (res.data.code === 0) {
             resolve(res)
             this.userOpenid = res.data.openId
-          } else {
-            this.$toast.fail(res.data.errorMsg)
-            reject(res)
-          }
-        }).catch(e => {
-          this.$toast.fail('获取openid接口失败')
-          reject(e)
-        })
-      })
-    },
-    getAlipayState () {
-      return new Promise((resolve, reject) => {
-        this.$ajax.post('https://www.ddqcwl.com:3381/pay/Alipay/alipayState', {
-          type: this.clientType,
-          useridORopenid: this.userOpenid
-        }).then(res => {
-          if (res.data.code === 0) {
-            resolve(res)
           } else {
             this.$toast.fail(res.data.errorMsg)
             reject(res)
@@ -102,7 +83,6 @@ export default {
       })
     },
     windowSearch () {
-      console.log('windowSearch', window.location.search)
       if (!window.location.search) return ''
       return JSON.parse('{"' + window.location.search.split('?').join('').replace(/=/g, '":"').replace(/&/g, '","') + '"}')
     },
@@ -110,13 +90,10 @@ export default {
       if ('WebSocket' in window) {
         var ws = new WebSocket('wss://www.ddqcwl.com:3381/pay/websocket/' + this.$cookie.get('openid'))
         console.log('webgetsocket', this.$cookie.get('openid'))
-        ws.onopen = () => console.log('Web Socket 已连接上...') // Web Socket 已连接上，使用 send() 方法发送数据 ws.send('发送数据')
-        ws.onmessage = (evt) => {
-          console.log('onmessage', evt)
-          this.socket_message(evt.data)
-        } // socket收到一个信息
-        ws.onclose = () => console.log('连接已关闭...')// 关闭 websocket
-        ws.onerror = () => this.$toast.fail('通信发生错误！') // websocket通信错误！
+        ws.onopen = () => console.log('Web Socket 已连接上...')
+        ws.onmessage = (evt) => this.socket_message(evt.data)
+        ws.onclose = () => console.log('连接已关闭...')
+        ws.onerror = () => this.$toast.fail('通信发生错误！')
       } else this.$toast.fail('您的浏览器不支持 WebSocket！')
     },
     socket_message (e) {
@@ -137,7 +114,7 @@ export default {
     console.log('entity', entity)
     if (entity && entity.code) {
       this.code = entity.code
-      this.getOpenid()
+      // this.getOpenid()
     }
   }
 }

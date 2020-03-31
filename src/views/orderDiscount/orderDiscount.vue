@@ -18,7 +18,6 @@
           <van-cell title="包含外卖" :value="entity.takeout_mark ? '是' : '否'"/>
         </div>
         <div slot="footer" class="row-end">
-          <!--<van-button size="small" type="info" :to="{name: 'orderDiscountUpdate', params: entity}">编辑</van-button>-->
           <van-button size="small" type="warning" style="margin-left: 1rem" @click="delete_click">删除</van-button>
         </div>
       </van-panel>
@@ -71,9 +70,7 @@ export default {
       this.$dialog.confirm({
         title: '提示',
         message: '确定要删除该整单折扣吗?'
-      }).then(() => {
-        this.delete_Reuqest()
-      })
+      }).then(() => this.delete_Reuqest())
     },
     delete_Reuqest () {
       this.$toast.loading({

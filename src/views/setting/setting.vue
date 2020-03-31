@@ -4,7 +4,6 @@
         <van-nav-bar title="店铺信息" left-text="返回" @click-left="$router.push('/home')" />
       </div>
       <div style="height: 2.875rem"></div>
-      <!--<van-image width="100%" height="200px" fit="cover" :src="$picture_src + shopEntity.relative_path" />-->
       <van-cell :title="shopEntity.shopName" icon="shop-o"></van-cell>
       <van-cell title="店铺电话" :value="shopEntity.storePhoneNum" class="field-css"/>
       <van-cell title="营业时间" :value="shopEntity.scanOpenTime + '-' + shopEntity.scanCloseTime"/>
@@ -101,9 +100,7 @@ export default {
       this.$dialog.confirm({
         title: '提示',
         message: '是否切换营业状态？'
-      }).then(() => {
-        this.switchReuqst()
-      })
+      }).then(() => this.switchReuqst())
     },
     switchReuqst () {
       this.openState_loading = true
