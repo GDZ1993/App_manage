@@ -2,7 +2,6 @@
     <div>
       <div style="position: fixed;width: 100%;top: 0;left: 0;z-index: 99;"><van-nav-bar title="餐饮管理系统" /></div>
       <div style="height: 2.875rem"></div>
-      <van-cell :title="shopEntity.storeName" icon="shop-o" style="margin-bottom: 0.5rem" v-if="shopEntity.storeName"></van-cell>
       <van-cell title="订单管理" is-link to="orderForm" />
       <van-cell title="菜品管理" is-link to="classify" style="margin-bottom: 0.5rem"/>
       <van-cell title="打折特价" is-link to="discount" />
@@ -108,7 +107,7 @@ export default {
     shopRequest () {
       return new Promise((resolve, reject) => {
         this.$ajax.post('/SellerInfo/Select', {
-          openid: this.$cookie.get('openid')
+          opeind: this.$cookie.get('openid')
         }).then(res => {
           if (res.data.resultCode === 0) {
             this.shopEntity = res.data.sellerInfo

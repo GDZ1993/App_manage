@@ -3,7 +3,13 @@
       <div style="position: fixed;width: 100%;top: 0;left: 0;z-index: 99;">
         <van-nav-bar title="整单满减" left-text="返回" @click-left="$router.push('/setting')" >
           <div slot="right">
-            <van-button plain hairline type="info" size="small" to="/moneyOffAdd" class="orderDiscount-Add">添加满减</van-button>
+            <van-dropdown-menu class="dropdown-menu-css">
+              <van-dropdown-item title="筛选" ref="item">
+                <div slot="title"><van-icon name="apps-o" size="1.5em"/></div>
+                <van-cell title="添加整单满减" is-link to="moneyOffAdd" />
+                <van-switch-cell :value="switch_cell" title="开启整单满减" @change="switch_request" :loading="switch_loading"/>
+              </van-dropdown-item>
+            </van-dropdown-menu>
           </div>
         </van-nav-bar>
       </div>
@@ -34,12 +40,39 @@ export default {
   name: 'moneyOff',
   data () {
     return {
+      switch_loading: false,
+      switch_cell: false,
       state: false,
       entity: null,
       minusList: []
     }
   },
   methods: {
+    switch_request () {
+      this.switch_loading = true
+      return new Promise((resolve, reject) => {
+        this.$ajax.post('/switch', {
+          openid: this.$cookie.get('openid'),
+          type: 1,
+          switch_mark: !this.switch_cell ? 1 : 0
+        }).then(res => {
+          if (res.data.resultCode === 0) {
+            this.switch_loading = false
+            this.switch_cell = !this.switch_cell
+            resolve(res)
+          } else {
+            this.switch_loading = false
+            this.$toast.fail(res.data.errorMsg)
+            reject(res)
+          }
+        }).catch(e => {
+          this.switch_loading = false
+          this.$toast.fail('接口失败')
+          console.log(e)
+          reject(e)
+        })
+      })
+    },
     request (e) {
       this.$toast.loading({
         message: '加载中...',
@@ -54,6 +87,9 @@ export default {
             this.entity = res.data.constantData
             this.state = this.$Time(res.data.constantData.endTime) > this.$Time(new Date())
             this.minusList = res.data.minusList
+            let boo = false
+            if (res.data.constantData.switch_mark) boo = true
+            this.switch_cell = boo
             this.$toast.clear()
             resolve(res)
           } else {
@@ -114,6 +150,9 @@ export default {
 <style >
   .moneyOff-div .orderDiscount-Add{
     border-color: white;
+  }
+  .dropdown-menu-css .van-cell__title{
+    text-align: left;
   }
 </style>
 <style scoped>

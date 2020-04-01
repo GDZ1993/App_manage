@@ -23,6 +23,11 @@
         <van-field v-model="formData.shopName" name="shopName" label="店铺名称" placeholder="请输入店铺名称" :rules="[{ required: true, message: '请输入店铺名称' }]" class="field-css"/>
         <van-field :value="province_city_area" is-link readonly  name="province_city_area" label="选择地址" placeholder="请选择地址" :rules="[{ required: true, message: '请选择地址' }]" @click="mapShow=true" class="field-css"/>
         <van-field v-model="formData.street" name="street" label="详细地址" placeholder="请输入详细地址" :rules="[{ required: true, message: '请输入详细地址' }]" class="field-css"/>
+        <van-cell title="店铺标签" value="内容" is-link @click="shop_showPicker = true">
+          <div slot="default">
+            <van-tag plain type="primary" v-for="item in shopType" :key="item.id + item.trade_name" style="margin-left: 0.2rem">{{item.trade_name}}</van-tag>
+          </div>
+        </van-cell>
         <div style="margin: 16px;"><van-button round block type="info" native-type="submit">提交</van-button></div>
       </van-form>
       <van-popup v-model="mapShow"  position="right" style="width: 100%;height: 100%" >
@@ -30,6 +35,17 @@
         <iframe id="mapPage" style="width: 100%;height: calc(100% - 2.875rem)" frameborder=0  scrolling="no"
                 src="https://apis.map.qq.com/tools/locpicker?search=1&type=1&key=TYDBZ-AFDWW-UKNRV-O3GBO-L6J26-MFFQZ&referer=myapp">
         </iframe>
+      </van-popup>
+      <van-popup v-model="shop_showPicker" position="bottom" style="height: 20rem">
+        <van-checkbox-group v-model="result">
+          <van-cell-group>
+            <van-cell v-for="(item, index) in shopTypeArr" clickable :key="item.id" :title="item.trade_name" @click="toggle(index, item)">
+              <template #right-icon>
+                <van-checkbox :name="item.trade_name" ref="checkboxes" />
+              </template>
+            </van-cell>
+          </van-cell-group>
+        </van-checkbox-group>
       </van-popup>
     </div>
 </template>
@@ -39,9 +55,13 @@ export default {
   name: 'takeOut',
   data () {
     return {
+      shop_showPicker: false,
       mapShow: false,
       province_city_area: '',
       logo_uuid: [],
+      result: [],
+      shopType: [],
+      shopTypeArr: [],
       foodHygieneLicense: [],
       foodBusinessLicense: [],
       formData: {
@@ -60,9 +80,17 @@ export default {
     }
   },
   methods: {
+    toggle (i, t) {
+      this.shopType.push(t)
+      this.$refs.checkboxes[i].toggle()
+    },
     onSubmit () {
-      console.log(this.formData)
-      this.applyTakeOut(this.formData)
+      let e = JSON.parse(JSON.stringify(this.formData))
+      let arr = []
+      this.shopType.forEach(item => arr.push(item.id))
+      e.of_industry_category_id = arr.join(',')
+      if (!arr.length) this.$toast.fail('请选择标签')
+      this.applyTakeOut(e)
     },
     applyTakeOut (e) {
       this.$toast.loading({
@@ -172,6 +200,29 @@ export default {
           reject(e)
         })
       })
+    },
+    label_Reuqst () {
+      this.$toast.loading({
+        message: '加载中...',
+        forbidClick: true,
+        duration: 0
+      })
+      return new Promise((resolve, reject) => {
+        this.$ajax.post('/trade_name', {}).then(res => {
+          if (res.data.resultCode === 0) {
+            this.shopTypeArr = res.data.ofIndustryCategoryList
+            this.$toast.clear()
+            resolve(res)
+          } else {
+            this.$toast.fail(res.data.errorMsg)
+            reject(res)
+          }
+        }).catch(e => {
+          this.$toast.fail('接口失败')
+          console.log(e)
+          reject(e)
+        })
+      })
     }
   },
   mounted () {
@@ -193,6 +244,7 @@ export default {
         this.mapShow = false
       }
     }, false)
+    this.label_Reuqst()
   }
 }
 </script>

@@ -10,7 +10,9 @@ const RouterConfig = {
 }
 export const router = new Router(RouterConfig)
 router.beforeEach((to, from, next) => {
-  if (to.name === 'login' && cookie.get('openid') && localStorage.getItem('routers')) {
+  if (to.name === 'signIn') {
+    next()
+  } else if (to.name === 'login' && cookie.get('openid') && localStorage.getItem('routers')) {
     console.log(1)
     next('/home')
   } else if (to.name !== 'login' && !(cookie.get('openid') || localStorage.getItem('routers'))) {

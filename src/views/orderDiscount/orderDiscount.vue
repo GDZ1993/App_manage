@@ -2,8 +2,14 @@
     <div class="orderDiscount-div">
       <div style="position: fixed;width: 100%;top: 0;left: 0;z-index: 99;">
         <van-nav-bar title="整单折扣" left-text="返回" @click-left="$router.push('/setting')" >
-          <div slot="right" v-if="!entity">
-            <van-button plain hairline type="info" size="small" to="/orderDiscountUpdate" class="orderDiscount-Add">添加整单折扣</van-button>
+          <div slot="right">
+            <van-dropdown-menu class="dropdown-menu-css">
+              <van-dropdown-item title="筛选" ref="item">
+                <div slot="title"><van-icon name="apps-o" @click="popupShow=true" size="1.5em"/></div>
+                <van-cell title="添加整单折扣" is-link to="orderDiscountUpdate" />
+                <van-switch-cell :value="switch_cell" title="开启整单折扣" @change="switch_change" :loading="switch_loading"/>
+              </van-dropdown-item>
+            </van-dropdown-menu>
           </div>
         </van-nav-bar>
       </div>
@@ -29,6 +35,8 @@ export default {
   name: 'orderDiscount',
   data () {
     return {
+      switch_loading: false,
+      switch_cell: false,
       state: false,
       entity: {
         begin_time: '',
@@ -39,6 +47,34 @@ export default {
     }
   },
   methods: {
+    switch_change () {
+      this.switch_request()
+    },
+    switch_request () {
+      this.switch_loading = true
+      return new Promise((resolve, reject) => {
+        this.$ajax.post('/switch', {
+          openid: this.$cookie.get('openid'),
+          type: 0,
+          switch_mark: !this.switch_cell ? 1 : 0
+        }).then(res => {
+          if (res.data.resultCode === 0) {
+            this.switch_loading = false
+            this.switch_cell = !this.switch_cell
+            resolve(res)
+          } else {
+            this.switch_loading = false
+            this.$toast.fail(res.data.errorMsg)
+            reject(res)
+          }
+        }).catch(e => {
+          this.switch_loading = false
+          this.$toast.fail('接口失败')
+          console.log(e)
+          reject(e)
+        })
+      })
+    },
     request (e) {
       this.$toast.loading({
         message: '加载中...',
@@ -91,8 +127,10 @@ export default {
               }
             })
             resolve(res)
-          } else reject(res)
-          this.$toast.clear()
+          } else {
+            this.$toast.fail(res.data.errorMsg)
+            reject(res)
+          }
         }).catch(e => {
           this.$toast.clear()
           console.log(e)
@@ -110,5 +148,8 @@ export default {
 <style >
   .orderDiscount-div .orderDiscount-Add{
     border-color: white;
+  }
+  .dropdown-menu-css .van-cell__title{
+    text-align: left;
   }
 </style>

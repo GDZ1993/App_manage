@@ -8,6 +8,11 @@
       <van-cell title="店铺电话" :value="shopEntity.storePhoneNum" class="field-css"/>
       <van-cell title="营业时间" :value="shopEntity.scanOpenTime + '-' + shopEntity.scanCloseTime"/>
       <div v-if="shopEntity.state=== 'APPROVED'">
+        <van-cell title="外卖标签" value="内容">
+          <div slot="default">
+            <van-tag plain type="primary" v-for="item in shopType" :key="item.id + item.trade_name" style="margin-left: 0.2rem">{{item.trade_name}}</van-tag>
+          </div>
+        </van-cell>
         <van-cell title="外卖营业时间" :value="shopEntity.takeoutOpentime + '-' + shopEntity.takeoutCloseTime" class="field-css"/>
         <van-cell title="出餐时间" :value="shopEntity.makeTime"/>
         <van-cell title="起送价格" :value="shopEntity.startMoney" class="field-css"/>
@@ -34,6 +39,7 @@ export default {
   name: 'setting',
   data () {
     return {
+      shopType: [],
       address: '',
       openState_loading: false,
       shopEntity: {
@@ -77,6 +83,14 @@ export default {
         }).then(res => {
           if (res.data.resultCode === 0) {
             let d = res.data.applymentList
+            let list = d.of_industry_category_id.split(',')
+            list.forEach(item => {
+              res.data.ofIndustryCategoryList.forEach(i => {
+                if (i.id === item - 0) {
+                  this.shopType.push(i)
+                }
+              })
+            })
             this.shopEntity = d
             let province = d.province || ''
             let city = d.city || ''

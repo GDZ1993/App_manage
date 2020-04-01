@@ -6,6 +6,11 @@
       <div style="height: 2.875rem"></div>
       <van-form @submit="onSubmit">
         <van-field v-model="formData.shopName" label="店铺名称" name="shopName" :rules="formRules['shopName']" placeholder="请填写店铺名称" />
+        <van-cell title="店铺标签" value="内容" is-link @click="shop_showPicker = true">
+          <div slot="default">
+            <van-tag plain type="primary" v-for="item in shopType" :key="item.id + item.trade_name" style="margin-left: 0.2rem">{{item.trade_name}}</van-tag>
+          </div>
+        </van-cell>
         <van-field v-model="formData.storePhoneNum" type="tel" label="店铺电话" name="storePhoneNum" :rules="formRules['storePhoneNum']" placeholder="请填写店铺联系方式" class="field-css"/>
         <van-field name="scanOpenTime" label="营业时间" :value="formData.scanOpenTime"  :rules="formRules['scanOpenTime']" @click="begin_showPicker = true" placeholder="未设置" readonly clickable right-icon="arrow" />
         <van-field name="scanCloseTime" label="停业时间" :value="formData.scanCloseTime" :rules="formRules['scanCloseTime']" @click="end_showPicker = true"  placeholder="未设置" readonly clickable right-icon="arrow"  class="field-css"/>
@@ -44,6 +49,17 @@
       <van-popup v-model="tkEnd_showPicker" position="bottom">
         <van-datetime-picker type="time" @cancel="tkEnd_showPicker = false" :formatter="formatter" @confirm="tkEnd_Confirm" />
       </van-popup>
+      <van-popup v-model="shop_showPicker" position="bottom" style="height: 20rem">
+        <van-checkbox-group v-model="result">
+          <van-cell-group>
+            <van-cell v-for="(item, index) in shopTypeArr" clickable :key="item.id" :title="item.trade_name" @click="toggle(index, item)">
+              <template #right-icon>
+                <van-checkbox :name="item.trade_name" ref="checkboxes" />
+              </template>
+            </van-cell>
+          </van-cell-group>
+        </van-checkbox-group>
+      </van-popup>
     </div>
 </template>
 
@@ -52,7 +68,11 @@ export default {
   name: 'updateShopInfo',
   data () {
     return {
+      result: [],
+      shopType: [],
+      shopTypeArr: [],
       uploader: [],
+      shop_showPicker: false,
       begin_showPicker: false,
       end_showPicker: false,
       tkopen_showPicker: false,
@@ -88,6 +108,11 @@ export default {
     }
   },
   methods: {
+    toggle (e, item) {
+      this.shopType.push(item)
+      this.$refs.checkboxes[e].toggle()
+    },
+    cell_shopClick () {},
     onend_Confirm (e) {
       this.formData.scanCloseTime = e
       this.end_showPicker = false
@@ -169,6 +194,9 @@ export default {
     onSubmit () {
       let e = JSON.parse(JSON.stringify(this.formData))
       e.openid = this.$cookie.get('openid')
+      let arr = []
+      this.shopType.forEach(item => arr.push(item.id))
+      e.of_industry_category_id = arr.join(',')
       this.update_Request(e)
     },
     update_Request (e) {
@@ -213,6 +241,18 @@ export default {
             let beginRecv = false
             if (e.beginRecv) beginRecv = true
             if (e.autoRecvOrder) autoRecvOrder = true
+            let arr = []
+            let list = e.of_industry_category_id.split(',')
+            list.forEach(item => {
+              res.data.ofIndustryCategoryList.forEach(i => {
+                if (i.id === item - 0) {
+                  arr.push(i)
+                  this.result.push(i.trade_name)
+                }
+              })
+            })
+            this.shopType = arr
+            this.shopTypeArr = res.data.ofIndustryCategoryList
             this.formData = {
               openid: this.$cookie.get('openid'), // 商户微信唯一标识
               shopName: e.shopName, // 店铺名称

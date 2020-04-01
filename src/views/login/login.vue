@@ -5,7 +5,8 @@
         <van-field v-model="formData.number" name="用户名" label="用户名" placeholder="请输入用户名" :rules="[{ required: true, message: '请填写用户名' }]" />
         <van-field v-model="formData.password" type="password" name="密码" label="密码" placeholder="请输入密码" :rules="[{ required: true, message: '请填写密码' }]" />
         <div style="margin: 2rem 1rem;">
-          <van-button round block type="info" native-type="submit" :loading="butLoading" loading-text="登陆中请稍后...">登录</van-button>
+          <van-button round block type="info" native-type="submit" :loading="butLoading" loading-text="登陆中请稍后..." style="margin-bottom: 0.75rem">登录</van-button>
+          <van-button round block type="info" native-type="button" to="signIn" :loading="butLoading" loading-text="登陆中请稍后...">注册</van-button>
         </div>
       </van-form>
     </div>
@@ -20,8 +21,8 @@ export default {
       code: '',
       butLoading: false,
       formData: {
-        number: '',
-        password: ''
+        number: '12345678',
+        password: '12345678'
       },
       clientType: '',
       audioSrc: require('../../assets/message_inform.mp3'),
