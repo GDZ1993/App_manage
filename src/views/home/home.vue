@@ -96,8 +96,12 @@ export default {
           qrclass: 'order'
         }).then(res => {
           if (res.data.resultCode === 0) {
+            this.qrCodeRequest()
             resolve(res)
-          } else reject(res)
+          } else {
+            this.$toast.fail(res.data.errorMsg)
+            reject(res)
+          }
         }).catch(e => {
           console.log(e)
           reject(e)
